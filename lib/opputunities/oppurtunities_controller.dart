@@ -2,30 +2,27 @@ import 'package:college_connectd/model/oppurtunities_model.dart';
 import 'package:college_connectd/opputunities/oppurtunities_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-final selectedFiltersProvider = StateProvider<List<OpportunityType>>((ref) {
-  return [OpportunityType.internship, OpportunityType.hackathon];
+final selectedFiltersProvider = StateProvider<OpportunityType>((ref) {
+  return OpportunityType.internship;
 });
 
 // StreamProvider for opportunities based on selected filters
 final opportunitiesStreamProvider = StreamProvider<List<OpportunityModel>>((ref) {
-  final selectedFilters = ref.watch(selectedFiltersProvider);
+  final selectedFilter = ref.watch(selectedFiltersProvider);
   final repository = ref.watch(opportunityRepositoryProvider);
   
-  if (selectedFilters.isEmpty) {
-    return Stream.value([]);
-  }
-  
-  return repository.getOpportunitiesByTypes(selectedFilters);
+  return repository.getOpportunitiesByType(selectedFilter);
 });
 
 
-final allOpportunitiesStreamProvider = StreamProvider<List<OpportunityModel>>((ref) {
-  final repository = ref.watch(opportunityRepositoryProvider);
+// final allOpportunitiesStreamProvider = StreamProvider<List<OpportunityModel>>((ref) {
+//   final repository = ref.watch(opportunityRepositoryProvider);
   
   
-  return repository.getAllOpportunities();
-});
+//   return repository.getAllOpportunities();
+// });
 
 // Provider for filtered opportunities (for search functionality)
 final filteredOpportunitiesProvider = Provider<AsyncValue<List<OpportunityModel>>>((ref) {
@@ -61,29 +58,29 @@ class OpportunityController extends StateNotifier<AsyncValue<void>> {
 
   OpportunityController(this._repository, this._ref) : super(const AsyncValue.data(null));
 
-  // Toggle filter selection
-  void toggleFilter(OpportunityType type) {
-    final currentFilters = _ref.read(selectedFiltersProvider);
-    final updatedFilters = List<OpportunityType>.from(currentFilters);
+  // // Toggle filter selection
+  // void toggleFilter(OpportunityType type) {
+  //   final currentFilters = _ref.read(selectedFiltersProvider);
+  //   final updatedFilters = List<OpportunityType>.from(currentFilters);
     
-    if (updatedFilters.contains(type)) {
-      updatedFilters.remove(type);
-    } else {
-      updatedFilters.add(type);
-    }
+  //   if (updatedFilters.contains(type)) {
+  //     updatedFilters.remove(type);
+  //   } else {
+  //     updatedFilters.add(type);
+  //   }
     
-    _ref.read(selectedFiltersProvider.notifier).state = updatedFilters;
-  }
+  //   _ref.read(selectedFiltersProvider.notifier).state = updatedFilters;
+  // }
 
-  // Set filters
-  void setFilters(List<OpportunityType> filters) {
-    _ref.read(selectedFiltersProvider.notifier).state = filters;
-  }
+  // // Set filters
+  // void setFilters(List<OpportunityType> filters) {
+  //   _ref.read(selectedFiltersProvider.notifier).state = filters;
+  // }
 
-  // Clear all filters
-  void clearFilters() {
-    _ref.read(selectedFiltersProvider.notifier).state = [];
-  }
+  // // Clear all filters
+  // void clearFilters() {
+  //   _ref.read(selectedFiltersProvider.notifier).state = [];
+  // }
 
   // Set search query
   void setSearchQuery(String query) {
@@ -147,8 +144,7 @@ class OpportunityController extends StateNotifier<AsyncValue<void>> {
   // Launch URL (for application links)
   Future<void> launchApplicationUrl(String url) async {
     try {
-      // You'll need to add url_launcher package
-      // await launchUrl(Uri.parse(url));
+       await launchUrl(Uri.parse(url));
     } catch (e) {
       state = AsyncValue.error('Could not launch $url', StackTrace.current);
     }

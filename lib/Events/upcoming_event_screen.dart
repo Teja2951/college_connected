@@ -90,6 +90,7 @@ class UpcomingEventScreen extends ConsumerWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
+              ElevatedButton(onPressed: () {ref.invalidate(upcomingEventsProvider);}, child: Text('retry'))
             ],
           ),
         ),

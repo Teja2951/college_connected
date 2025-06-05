@@ -8,6 +8,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
     return EventController(eventRepository: ref.read(eventRepositoryProvider), ref: ref);
   });
 
+final userRegistrationStatusProvider = FutureProvider.family<bool, (String eventId, String userId)>((ref, tuple) async {
+  final eventId = tuple.$1;
+  final userId = tuple.$2;
+
+  return ref.read(eventRepositoryProvider).isUserRegistered(eventId, userId);
+
+});
+
+
+
   final upcomingEventsProvider = StreamProvider<List<EventModel>>((ref) {
     return ref.read(eventRepositoryProvider).getUpcomingEvents();
   });
@@ -16,10 +26,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
     return ref.read(eventRepositoryProvider).getPastEvents();
   });
 
-  // final myEventProvider = Future<List<EventModel>>((ref) {
-  //   final userId = ref.read(userProvider)!.registrationId;
-  //   return ref.read(eventRepositoryProvider).getMyEvents(userId!);
-  // });
+  final myEventProvider = StreamProvider<List<EventModel>>((ref) {
+    final userId = ref.read(userProvider)!.registrationId;
+    return ref.read(eventRepositoryProvider).getMyEvents(userId!);
+  });
 
   final getEventProvider = StreamProvider.family<EventModel?,String>((ref,eventId) {
    return ref.read(eventRepositoryProvider).getEvent(eventId);
@@ -53,6 +63,7 @@ class EventController extends StateNotifier<bool> {
       state = true;
       await _eventRepository.registerUser(eventId, userId);
       state = false;
+      _ref.invalidate(userRegistrationStatusProvider((eventId, userId)));
       return true;
     }catch(e){
       state = false;

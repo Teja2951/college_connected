@@ -45,7 +45,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: 100),
+
+                      // Align(
+                      //   alignment: Alignment.topCenter,
+                      //   child: Text(
+                      //     'UniSync',
+                      //      style: TextStyle(
+                      //       fontSize: 32,
+                      //       fontWeight: FontWeight.bold,
+                      //       color: Colors.white
+                      //      ),
+                      //   ),
+                      // ),
+                      SizedBox(height: 70),
 
                       Lottie.asset(
                         'assets/animations/login_lottie.json',

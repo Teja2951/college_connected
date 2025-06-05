@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_connectd/core/Firebase/firebase_providers.dart';
@@ -27,22 +28,19 @@ class EventRepository {
 
  Future<bool> isUserRegistered(String eventId, String userId) async {
   print('called');
-  final doc = await FirebaseFirestore.instance
-    .collection('events')
-    .doc(eventId)
-    .collection('registeredUsers')
-    .doc('members')
-    .get();
-
-  final List<dynamic> userIds = doc.data()?['userIds'] ?? [];
-  print('the getstatusrepo method says:  ${userIds} ${userIds.contains(userId)}');
+  final doc = await _events.doc(eventId).get();
+  final data = doc.data() as Map<String,dynamic>;
+  final List<dynamic> userIds = data['regIds'] ?? [];
+  print(userIds);
   return userIds.contains(userId);
 }
 
   Future<void> registerUser(String eventId, String userId) async{
-    _events.doc(eventId).collection('registeredUsers').doc('members').set({'userIds': FieldValue.arrayUnion([userId]),});
+    _events.doc(eventId).update({'regIds': FieldValue.arrayUnion([userId]),});
     _events.doc(eventId).update({'registrationCount':FieldValue.increment(1)});
+
   }
+
 
   Stream<EventModel?> getEvent(String eventId) {
     return _events.doc(eventId).snapshots().map((doc)=> doc.exists ?EventModel.fromMap(doc.data() as Map<String,dynamic>, doc.id) : null );
@@ -60,6 +58,18 @@ class EventRepository {
         return EventModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
       }).toList();
     });
+  }
+
+  Stream<List<EventModel>> getMyEvents(String userId) {
+    return _events
+      .where('regIds', arrayContains: userId)
+      .orderBy('startTime')
+      .snapshots()
+      .map((snapshot) {
+        return snapshot.docs.map((doc) {
+          return EventModel.fromMap(doc.data() as Map<String, dynamic> , doc.id);
+        }).toList();
+      });
   }
 
 //   Future<List<EventModel>> getMyEvents(String userId) async {

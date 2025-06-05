@@ -20,8 +20,10 @@ class _EventDetailscreenState extends ConsumerState<EventDetailsScreen> {
   Widget build(BuildContext context) {
     final eventAsync = ref.watch(getEventProvider(widget.eventId));
     final userAsync = ref.watch(userProvider);
+    final isReg = userAsync!= null ?  ref.watch(userRegistrationStatusProvider((widget.eventId,userAsync.registrationId!))) : const AsyncValue.data(false);;
 
-    getStatus(widget.eventId, userAsync!.registrationId!, ref.read(eventControllerProvider.notifier));
+
+
 
     return Scaffold(
       body: eventAsync.when(
@@ -368,22 +370,28 @@ class _EventDetailscreenState extends ConsumerState<EventDetailsScreen> {
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child: FloatingActionButton.extended(
               onPressed: () {
-                Routemaster.of(context).push(
+
+                data.isTeamEvent ? 
+                  Routemaster.of(context).push(
+                    '/individualRegistrationForm',
+                    queryParameters: {'id' : data.id}
+                  ) :
+
+                  Routemaster.of(context).push(
                     '/individualRegistrationForm',
                     queryParameters: {'id' : data.id}
                   );
+
               },
               backgroundColor: Colors.green,
               elevation: 8,
-              icon: const Icon(Icons.how_to_reg, color: Colors.white),
-              label: Text(
-                data.isTeamEvent ? 'Register Team' : 'Register Now',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              icon: const Icon(Icons.event, color: Colors.white),
+              label: isReg.when(
+  data: (value) => value ? Text('View Status',style: TextStyle(color: Colors.white),) : Text('Register Now',style: TextStyle(color: Colors.white),),
+  loading: () => CircularProgressIndicator(color: Colors.white,),
+  error: (err, _) => Text('Error'),
+),
+
             ),
           ) : null,
         orElse: () => null,
@@ -475,9 +483,4 @@ class _EventDetailscreenState extends ConsumerState<EventDetailsScreen> {
       ],
     );
   }
-}
-
-
-Future<bool> getStatus(String? eventId, String userId, EventController controller) async {
-  return await controller.isUserRegistered(eventId!, userId);
 }

@@ -22,6 +22,7 @@ class EventModel {
   final int minTeamSize;
   final int maxTeamSize;
   final bool isRegistrationOpen;
+  final List<String> regIds;
   EventModel({
     required this.id,
     required this.title,
@@ -40,6 +41,7 @@ class EventModel {
     required this.minTeamSize,
     required this.maxTeamSize,
     required this.isRegistrationOpen,
+    this.regIds = const [],
   });
 
 
@@ -62,6 +64,7 @@ class EventModel {
     int? minTeamSize,
     int? maxTeamSize,
     bool? isRegistrationOpen,
+    List<String>? regIds,
   }) {
     return EventModel(
       id: id ?? this.id,
@@ -81,6 +84,7 @@ class EventModel {
       minTeamSize: minTeamSize ?? this.minTeamSize,
       maxTeamSize: maxTeamSize ?? this.maxTeamSize,
       isRegistrationOpen: isRegistrationOpen ?? this.isRegistrationOpen,
+      regIds: regIds ?? this.regIds,
     );
   }
 
@@ -103,6 +107,7 @@ class EventModel {
       'minTeamSize': minTeamSize,
       'maxTeamSize': maxTeamSize,
       'isRegistrationOpen': isRegistrationOpen,
+      'regIds' : regIds,
     };
   }
 
@@ -125,10 +130,11 @@ class EventModel {
       isTeamEvent: map['isTeamEvent'],
       maxTeamSize: map['maxTeamSize'],
       minTeamSize: map['minTeamSize'],
+      regIds:  List<String>.from(map['regIds'] ?? []),
     );
   }
   @override
   String toString() {
-    return 'EventModel(id: $id, title: $title, shortDescription: $shortDescription, venue: $venue, prizeMoney: $prizeMoney, description: $description, rules: $rules, startTime: $startTime, endTime: $endTime, eligibility: $eligibility, registrationCount: $registrationCount, tracks: $tracks, department: $department, isTeamEvent: $isTeamEvent, minTeamSize: $minTeamSize, maxTeamSize: $maxTeamSize, isRegistrationOpen: $isRegistrationOpen)';
+    return 'EventModel(id: $id, title: $title, shortDescription: $shortDescription, venue: $venue, prizeMoney: $prizeMoney, description: $description, rules: $rules, startTime: $startTime, endTime: $endTime, eligibility: $eligibility, registrationCount: $registrationCount, tracks: $tracks, department: $department, isTeamEvent: $isTeamEvent, minTeamSize: $minTeamSize, maxTeamSize: $maxTeamSize, isRegistrationOpen: $isRegistrationOpen, regIds: $regIds)';
   }
 }

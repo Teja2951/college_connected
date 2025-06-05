@@ -15,6 +15,8 @@ class OpportunitiesScreen extends ConsumerStatefulWidget {
 class _OpportunitiesScreenState extends ConsumerState<OpportunitiesScreen> {
   final TextEditingController _searchController = TextEditingController();
 
+  final List<OpportunityType> type = [OpportunityType.internship,OpportunityType.hackathon];
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -23,7 +25,7 @@ class _OpportunitiesScreenState extends ConsumerState<OpportunitiesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedFilters = ref.watch(selectedFiltersProvider);
+    final selectedFilter = ref.watch(selectedFiltersProvider);
     final opportunitiesAsync = ref.watch(filteredOpportunitiesProvider);
     final controller = ref.read(opportunityControllerProvider.notifier);
 
@@ -53,28 +55,75 @@ class _OpportunitiesScreenState extends ConsumerState<OpportunitiesScreen> {
                     ),
                   ),
                   const Spacer(),
+
                   Container(
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 255, 5, 155),
-                          Color.fromARGB(255, 236, 10, 218)
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      child: Text(
-                        'Internships/Hackathons',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  )
+  padding: const EdgeInsets.symmetric(horizontal: 16),
+  decoration: BoxDecoration(
+    gradient: const LinearGradient(
+      colors: [
+        Color.fromARGB(255, 98, 162, 240),
+        Color.fromARGB(255, 10, 179, 236)
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    borderRadius: BorderRadius.circular(30),
+  ),
+  child: DropdownButtonHideUnderline(
+    child: DropdownButton<OpportunityType>(
+      value: selectedFilter,
+      icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+      dropdownColor: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        fontSize: 14,
+      ),
+      items: type.map((value) {
+        return DropdownMenuItem<OpportunityType>(
+          value: value,
+          child: Text(
+            value == OpportunityType.internship ? 'Internships' : 'Hackathons',
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+            ),
+          ),
+        );
+      }).toList(),
+      onChanged: (OpportunityType? newType) {
+        if (newType != null) {
+          ref.read(selectedFiltersProvider.notifier).state = newType;
+        }
+      },
+    ),
+  ),
+)
+
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     gradient: const LinearGradient(
+                  //       colors: [
+                  //         Color.fromARGB(255, 255, 5, 155),
+                  //         Color.fromARGB(255, 236, 10, 218)
+                  //       ],
+                  //     ),
+                  //     borderRadius: BorderRadius.circular(20),
+                  //   ),
+                  //   child: const Padding(
+                  //     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  //     child: Text(
+                  //       'Internships/Hackathons',
+                  //       style: TextStyle(
+                  //         fontSize: 14,
+                  //         color: Colors.white,
+                  //         fontWeight: FontWeight.w600,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
 
@@ -131,43 +180,43 @@ class _OpportunitiesScreenState extends ConsumerState<OpportunitiesScreen> {
               const SizedBox(height: 16),
 
               // Filter Chips
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF1F5F9),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: OpportunityType.values.map((type) {
-                      final isSelected = selectedFilters.contains(type);
-                      final label = type == OpportunityType.internship ? 'Internships' : 'Hackathons';
+              // Container(
+              //   decoration: BoxDecoration(
+              //     color: const Color(0xFFF1F5F9),
+              //     borderRadius: BorderRadius.circular(16),
+              //   ),
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: OpportunityType.values.map((type) {
+              //         final isSelected = selectedFilters.contains(type);
+              //         final label = type == OpportunityType.internship ? 'Internships' : 'Hackathons';
                       
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        child: FilterChip(
-                          selected: isSelected,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          avatar: isSelected
-                              ? const Icon(Icons.check, size: 18, color: Colors.white)
-                              : null,
-                          label: Text(label),
-                          selectedColor: Colors.green,
-                          backgroundColor: Colors.white,
-                          onSelected: (bool selected) {
-                            controller.toggleFilter(type);
-                          },
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
+              //         return Padding(
+              //           padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              //           child: FilterChip(
+              //             selected: isSelected,
+              //             shape: RoundedRectangleBorder(
+              //               borderRadius: BorderRadius.circular(8),
+              //             ),
+              //             avatar: isSelected
+              //                 ? const Icon(Icons.check, size: 18, color: Colors.white)
+              //                 : null,
+              //             label: Text(label),
+              //             selectedColor: Colors.green,
+              //             backgroundColor: Colors.white,
+              //             onSelected: (bool selected) {
+              //               controller.toggleFilter(type);
+              //             },
+              //           ),
+              //         );
+              //       }).toList(),
+              //     ),
+              //   ),
+              // ),
 
-              const SizedBox(height: 20),
+              // const SizedBox(height: 20),
 
               // Opportunities List
               Expanded(

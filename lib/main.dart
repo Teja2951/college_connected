@@ -8,29 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 
 
-// enum AuthStatus { loading, authenticated, unauthenticated }
-
-// class AuthState {
-//   final AuthStatus status;
-//   final String? error;
-
-//   const AuthState({
-//     required this.status,
-//     this.error,
-//   });
-
-//   AuthState copyWith({
-//     AuthStatus? status,
-//     String? error,
-//   }) {
-//     return AuthState(
-//       status: status ?? this.status,
-//       error: error ?? this.error,
-//     );
-//   }
-// }
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -119,6 +96,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     }
 
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Poppins',
         textTheme: const TextTheme(

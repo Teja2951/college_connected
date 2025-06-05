@@ -9,7 +9,7 @@ import 'package:routemaster/routemaster.dart';
 class MyEventScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final upComingEventsAsync = ref.watch(upcomingEventsProvider);
+    final upComingEventsAsync = ref.watch(myEventProvider);
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
