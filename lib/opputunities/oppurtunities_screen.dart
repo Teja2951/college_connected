@@ -59,21 +59,23 @@ class _OpportunitiesScreenState extends ConsumerState<OpportunitiesScreen> {
                   Container(
   padding: const EdgeInsets.symmetric(horizontal: 16),
   decoration: BoxDecoration(
-    gradient: const LinearGradient(
-      colors: [
-        Color.fromARGB(255, 98, 162, 240),
-        Color.fromARGB(255, 10, 179, 236)
-      ],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    ),
+    color: Colors.black,
+    // gradient: const LinearGradient(
+    //   colors: [
+    //     Color.fromARGB(255, 98, 162, 240),
+    //     Color.fromARGB(255, 10, 179, 236)
+    //   ],
+    //   begin: Alignment.topLeft,
+    //   end: Alignment.bottomRight,
+    // ),
     borderRadius: BorderRadius.circular(30),
   ),
   child: DropdownButtonHideUnderline(
     child: DropdownButton<OpportunityType>(
       value: selectedFilter,
       icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
-      dropdownColor: Colors.white,
+      dropdownColor: Colors.black,
+      underline: Divider(color: Colors.white,thickness: 2,),
       borderRadius: BorderRadius.circular(16),
       style: const TextStyle(
         color: Colors.white,
@@ -440,34 +442,34 @@ class OpportunityCard extends StatelessWidget {
               // Details row
               Row(
                 children: [
-                  Icon(Icons.location_on, size: 16, color: Colors.grey[500]),
+                  Icon(Icons.location_on, size: 16, color: Colors.black),
                   const SizedBox(width: 4),
                   Text(
                     opportunity.isRemote ? 'Remote' : opportunity.location,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[600],
+                      color: Colors.black,
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Icon(Icons.schedule, size: 16, color: Colors.grey[500]),
+                  Icon(Icons.schedule, size: 16, color: Colors.black),
                   const SizedBox(width: 4),
                   Text(
                     opportunity.duration,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[600],
+                      color: Colors.black,
                     ),
                   ),
                   if (opportunity.stipend != null) ...[
                     const SizedBox(width: 16),
-                    Icon(Icons.monetization_on, size: 16, color: Colors.grey[500]),
+                    Icon(Icons.currency_rupee_sharp, size: 16, color: Colors.black),
                     const SizedBox(width: 4),
                     Text(
                       opportunity.stipend!,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -483,17 +485,17 @@ class OpportunityCard extends StatelessWidget {
                   runSpacing: 6,
                   children: opportunity.skills.take(3).map((skill) {
                     return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: Colors.lightBlue,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         skill,
                         style: TextStyle(
                           fontSize: 11,
-                          color: Colors.grey[700],
-                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w300,
                         ),
                       ),
                     );
@@ -529,9 +531,9 @@ class OpportunityCard extends StatelessWidget {
                     ],
                   ),
                   Icon(
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                    color: Colors.grey[400],
+                    Icons.launch_rounded,
+                    size: 20,
+                    color: Colors.black,
                   ),
                 ],
               ),

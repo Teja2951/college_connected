@@ -1,4 +1,5 @@
 import 'package:college_connectd/Events/EventDetailScreen.dart';
+import 'package:college_connectd/Events/Teams/team_registration_form.dart';
 import 'package:college_connectd/Events/add_event_form.dart';
 import 'package:college_connectd/Events/individual_registration_form.dart';
 import 'package:college_connectd/auth/view/login_screen.dart';
@@ -31,6 +32,10 @@ final loggedInRoutes = RouteMap(routes: {
   '/individualRegistrationForm' : (route) {
       final eventId = route.queryParameters['id']!;
       return MaterialPage(child: IndividualRegistrationForm(eventId: eventId,));
+  },
+  '/teamRegistrationForm' : (route) {
+      final eventId = route.queryParameters['id']!;
+      return MaterialPage(child: TeamRegistrationForm(eventId: eventId,));
   },
   '/oppurtunies' : (_) => MaterialPage(child: OpportunitiesScreen()),
   '/opportunity/:id': (routeData) => MaterialPage(

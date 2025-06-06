@@ -46,6 +46,14 @@ class EventRepository {
     return _events.doc(eventId).snapshots().map((doc)=> doc.exists ?EventModel.fromMap(doc.data() as Map<String,dynamic>, doc.id) : null );
   }
 
+  Future<List<int>> getMinMax(String eventId) async{
+    final doc = await _events.doc(eventId).get();
+    final data = doc.data() as Map<String,dynamic>;
+    final a = data['minTeamSize'];
+    final b = data['maxTeamSize'];
+    final numbers =  <num>[a,b];
+    return List.from(numbers);
+  }
 
   Stream<List<EventModel>> getPastEvents() {
     final now = DateTime.now();

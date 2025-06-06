@@ -194,7 +194,7 @@ class _PeerScreenState extends ConsumerState<PeerScreen> with TickerProviderStat
       animation: _filterAnimation,
       builder: (context, child) {
         return Container(
-          height: _filterAnimation.value * 200,
+          height: _filterAnimation.value * 500,
           child: SingleChildScrollView(
             child: Container(
               color: Colors.white,

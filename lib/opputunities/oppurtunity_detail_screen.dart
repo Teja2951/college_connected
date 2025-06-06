@@ -97,14 +97,16 @@ class OpportunityDetailsView extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: const Color(0xFF1A1A1A),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: IconButton(
-                  icon: const Icon(Icons.share, color: Colors.black),
+                  icon: const Icon(Icons.share, color: Colors.white),
                   onPressed: () => _shareOpportunity(context),
                 ),
               ),
+
+              
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
@@ -488,11 +490,12 @@ class OpportunityDetailsView extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isExpired ? null : () => _launchApplicationUrl(context),
         style: ElevatedButton.styleFrom(
-          backgroundColor: isExpired ? Colors.grey : const Color.fromARGB(255, 255, 5, 155),
+          backgroundColor: isExpired ? Colors.grey : Colors.black,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
+            //side: BorderSide(color: Colors.amber)
           ),
           elevation: isExpired ? 0 : 3,
         ),
@@ -515,16 +518,23 @@ class OpportunityDetailsView extends StatelessWidget {
     return '${date.day} ${months[date.month - 1]}, ${date.year}';
   }
 
+  // Future<void> _launchApplicationUrl(BuildContext context) async {
+  //   try {
+  //     final uri = Uri.parse(opportunity.applicationLink);
+  //     if (await canLaunchUrl(uri)) {
+  //       await launchUrl(uri, mode: LaunchMode.externalApplication);
+  //     } else {
+  //       _showErrorSnackBar(context, 'Could not open application link');
+  //     }
+  //   } catch (e) {
+  //     _showErrorSnackBar(context, 'Error opening application link');
+  //   }
+  // }
+
   Future<void> _launchApplicationUrl(BuildContext context) async {
-    try {
-      final uri = Uri.parse(opportunity.applicationLink);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else {
-        _showErrorSnackBar(context, 'Could not open application link');
-      }
-    } catch (e) {
-      _showErrorSnackBar(context, 'Error opening application link');
+    final Uri uri = Uri.parse(opportunity.applicationLink);
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch $uri');
     }
   }
 

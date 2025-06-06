@@ -373,7 +373,7 @@ class _EventDetailscreenState extends ConsumerState<EventDetailsScreen> {
 
                 data.isTeamEvent ? 
                   Routemaster.of(context).push(
-                    '/individualRegistrationForm',
+                    '/teamRegistrationForm',
                     queryParameters: {'id' : data.id}
                   ) :
 

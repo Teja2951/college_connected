@@ -170,14 +170,19 @@ Widget _appbar(UserModel user,WidgetRef ref) {
       CircleAvatar(
   radius: 30,
   backgroundColor: Colors.grey[200],
-  child: ClipOval(
-    child: CachedNetworkImage(
-      imageUrl: user.photo!,
-      width: 60,
-      height: 60,
-      fit: BoxFit.cover,
-      placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
-      errorWidget: (context, url, error) => Icon(Icons.error),
+  child: GestureDetector(
+    onTap: () {
+      
+    },
+    child: ClipOval(
+      child: CachedNetworkImage(
+        imageUrl: user.photo!,
+        width: 60,
+        height: 60,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+      ),
     ),
   ),
 ),
