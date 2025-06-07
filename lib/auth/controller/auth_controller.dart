@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:college_connectd/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,7 +41,7 @@ class AuthController extends StateNotifier<bool> {
     }
   }
 
-  Future<void> signInWithDigiCampus(String email, String password) async {
+  Future<void> signInWithDigiCampus(String email, String password,BuildContext context) async {
     state = true;
     try {
       final user = await _authRepository.signInWithDigi(email, password);
@@ -51,23 +52,62 @@ class AuthController extends StateNotifier<bool> {
         return true;
       });
       state = false;
-       Fluttertoast.showToast(
-  msg: "Welcome Back!!",
-  toastLength: Toast.LENGTH_SHORT,
-  gravity: ToastGravity.BOTTOM,
-  backgroundColor: Color.fromARGB(255, 0, 146, 32),
-  textColor: const Color.fromARGB(255, 255, 255, 255),
-  fontSize: 16.0,
-);
+      const snackBar = SnackBar(
+                  /// need to set following properties for best effect of awesome_snackbar_content
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: 'Welcome Back',
+                    message:
+                        'njoyyyy',
+
+                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                    contentType: ContentType.success,
+                  ),
+                );
+
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(snackBar);
+//        Fluttertoast.showToast(
+//   msg: "Welcome Back!!",
+//   toastLength: Toast.LENGTH_SHORT,
+//   gravity: ToastGravity.BOTTOM,
+//   backgroundColor: Color.fromARGB(255, 0, 146, 32),
+//   textColor: const Color.fromARGB(255, 255, 255, 255),
+//   fontSize: 16.0,
+// );
     } catch(e) {
-     Fluttertoast.showToast(
-  msg: "Please Confirm your credentials with digicampus $e",
-  toastLength: Toast.LENGTH_SHORT,
-  gravity: ToastGravity.BOTTOM,
-  backgroundColor: Color.fromARGB(255, 255, 0, 0),
-  textColor: const Color.fromARGB(255, 255, 255, 255),
-  fontSize: 16.0,
-);
+      const materialBanner = MaterialBanner(
+                  /// need to set following properties for best effect of awesome_snackbar_content
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
+                  forceActionsBelow: true,
+                  content: AwesomeSnackbarContent(
+                    title: 'Enter you Digi Credentials',
+                    message:
+                        'Please Confirm your credentials with digicampus',
+
+                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                    contentType: ContentType.warning,
+                    // to configure for material banner
+                    inMaterialBanner: true,
+                  ),
+                  actions: [SizedBox.shrink()],
+                );
+
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentMaterialBanner()
+                  ..showMaterialBanner(materialBanner);
+//      Fluttertoast.showToast(
+//   msg: "Please Confirm your credentials with digicampus $e",
+//   toastLength: Toast.LENGTH_SHORT,
+//   gravity: ToastGravity.BOTTOM,
+//   backgroundColor: Color.fromARGB(255, 255, 0, 0),
+//   textColor: const Color.fromARGB(255, 255, 255, 255),
+//   fontSize: 16.0,
+// );
       state = false;
     }
   }

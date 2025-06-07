@@ -28,7 +28,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     Future<void> _login() async {
     await ref.read(authControllerProvider.notifier)
-        .signInWithDigiCampus(emailController.text, passwordController.text);
+        .signInWithDigiCampus(emailController.text, passwordController.text,context);
   }
 
     return Scaffold(

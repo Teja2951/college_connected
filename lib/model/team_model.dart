@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 class Team {
-  final String id;           
+  final String? id;           
   final String teamName;
   final String joinPin;          
   final List<String> memberIds;  
@@ -12,7 +12,7 @@ class Team {
   final int min;
   final int max;
   Team({
-    required this.id,
+   this.id,
     required this.teamName,
     required this.joinPin,
     required this.memberIds,
@@ -23,7 +23,7 @@ class Team {
   });
 
   Team copyWith({
-    String? id,
+    required String id,
     String? teamName,
     String? joinPin,
     List<String>? memberIds,
@@ -33,7 +33,7 @@ class Team {
     int? max,
   }) {
     return Team(
-      id: id ?? this.id,
+      id: id,
       teamName: teamName ?? this.teamName,
       joinPin: joinPin ?? this.joinPin,
       memberIds: memberIds ?? this.memberIds,
