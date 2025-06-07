@@ -181,7 +181,10 @@ Widget _appbar(UserModel user,WidgetRef ref) {
         height: 60,
         fit: BoxFit.cover,
         placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
-        errorWidget: (context, url, error) => Icon(Icons.error),
+        errorWidget: (context, url, error) {
+          ref.read(authControllerProvider.notifier).refreshUser();
+           return Icon(Icons.error);
+        }
       ),
     ),
   ),

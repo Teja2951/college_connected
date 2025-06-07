@@ -29,6 +29,17 @@ class AuthController extends StateNotifier<bool> {
         _ref = ref,
         super(false);
 
+  Future<void> refreshUser() async {
+    try{
+      final user = _ref.read(userProvider);
+      final refreshUser = await _authRepository.signInWithDigi(user!.email, user.password);
+      _ref.read(userProvider.notifier).state = refreshUser;
+      await _authRepository.storeUserToFirestore(refreshUser);
+    }catch(e){
+      print(e);
+    }
+  }
+
   Future<void> signInWithDigiCampus(String email, String password) async {
     state = true;
     try {
