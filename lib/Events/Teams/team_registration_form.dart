@@ -498,6 +498,46 @@ class _TeamRegistrationFormState extends ConsumerState<TeamRegistrationForm> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
+                    Spacer(),
+                    team.isSubmitted ? IconButton(onPressed: () async{
+                      final success = await ref
+                                            .read(teamControllerProvider(widget.eventId).notifier)
+                                            .deleteTeam(team,user.registrationId!);
+                                        
+                                        if (success) {
+                                          const snackBar = SnackBar(
+                                            elevation: 0,
+                                            behavior: SnackBarBehavior.floating,
+                                            backgroundColor: Colors.transparent,
+                                            content: AwesomeSnackbarContent(
+                                              title: 'Success!',
+                                              message: 'Team Deleted successfully!',
+                                              contentType: ContentType.success,
+                                            ),
+                                          );
+
+                                          ScaffoldMessenger.of(context)
+                                            ..hideCurrentSnackBar()
+                                            ..showSnackBar(snackBar);
+                                        }
+                                        else{
+                                           const snackBar = SnackBar(
+                                            elevation: 0,
+                                            behavior: SnackBarBehavior.floating,
+                                            backgroundColor: Colors.transparent,
+                                            content: AwesomeSnackbarContent(
+                                              title: 'Oops!',
+                                              message: 'You dont have the priviledge contact your leader',
+                                              contentType: ContentType.failure,
+                                            ),
+                                          );
+
+                                          ScaffoldMessenger.of(context)
+                                            ..hideCurrentSnackBar()
+                                            ..showSnackBar(snackBar);
+                                        }
+                    }, icon: Icon(Icons.delete,color: Colors.deepOrange,))
+                    : SizedBox(),
                   ],
                 ),
                 const SizedBox(height: 12),

@@ -38,6 +38,22 @@ class TeamRepository {
         
   }
 
+  Future<bool> deleteTeam(Team team,String userId) async{
+    try{
+      if (team.teamLeaderId == userId) {
+        // If leader is leaving, delete the team
+        await _teams.doc(team.id).delete();
+         _events.doc(_eventId).update({'regIds': [],});
+        return true;
+      }
+      else{
+        return false;
+      }
+    }catch(e){
+      return false;
+    }
+  }
+
   Future<bool> joinTeam(String joinPin, String userId) async {
     try {
       final querySnapshot = await _teams.where('joinPin', isEqualTo: joinPin).get();

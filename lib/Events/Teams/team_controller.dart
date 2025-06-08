@@ -33,6 +33,17 @@ class TeamController extends StateNotifier<bool> {
         Future<List<int>> getMinMax() async{
          return await  _teamRepository.getMinMax();
         }
+  Future<bool> deleteTeam(Team team, String userId) async{
+    try {
+      state = true;
+      final s = await _teamRepository.deleteTeam(team,userId);
+      state = false;
+      return s;
+    } catch (e) {
+      state = false;
+      return false;
+    }
+  }
 
   Future<bool> createTeam(Team team,String userId) async {
     try {
