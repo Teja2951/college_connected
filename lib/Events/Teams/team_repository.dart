@@ -24,12 +24,18 @@ class TeamRepository {
 
   CollectionReference get _teams => 
       _firebaseFirestore.collection('events').doc(_eventId).collection('teams');
+
+        CollectionReference get _events => _firebaseFirestore.collection('events');
+
   
   CollectionReference get _users => 
       _firebaseFirestore.collection('users');
 
-  Future<void> createTeam(Team team) async {
+  Future<void> createTeam(Team team,String userId) async {
     await _teams.doc(team.id).set(team.toMap());
+    _events.doc(_eventId).update({'regIds': FieldValue.arrayUnion([userId]),});
+    _events.doc(_eventId).update({'registrationCount':FieldValue.increment(1)});
+        
   }
 
   Future<bool> joinTeam(String joinPin, String userId) async {
@@ -57,6 +63,8 @@ class TeamRepository {
       // Add user to team
       final updatedMemberIds = [...team.memberIds, userId];
       await teamDoc.reference.update({'memberIds': updatedMemberIds});
+      _events.doc(_eventId).update({'regIds': FieldValue.arrayUnion([userId]),});
+    _events.doc(_eventId).update({'registrationCount':FieldValue.increment(1)});
       
       return true;
     } catch (e) {
@@ -73,6 +81,9 @@ class TeamRepository {
         // Remove user from team
         final updatedMemberIds = team.memberIds.where((id) => id != userId).toList();
         await _teams.doc(team.id).update({'memberIds': updatedMemberIds});
+      _events.doc(_eventId).update({'regIds': FieldValue.arrayRemove([userId]),});
+    _events.doc(_eventId).update({'registrationCount':FieldValue.increment(-1)});
+        
       }
       return true;
     } catch (e) {
@@ -84,6 +95,9 @@ class TeamRepository {
     try {
       final updatedMemberIds = team.memberIds.where((id) => id != memberId).toList();
       await _teams.doc(team.id).update({'memberIds': updatedMemberIds});
+      _events.doc(_eventId).update({'regIds': FieldValue.arrayRemove([memberId]),});
+    _events.doc(_eventId).update({'registrationCount':FieldValue.increment(-1)});
+        
       return true;
     } catch (e) {
       return false;
@@ -168,4 +182,6 @@ class TeamRepository {
       return [];
     }
   }
+
+  
 }

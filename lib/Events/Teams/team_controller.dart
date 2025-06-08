@@ -34,10 +34,10 @@ class TeamController extends StateNotifier<bool> {
          return await  _teamRepository.getMinMax();
         }
 
-  Future<bool> createTeam(Team team) async {
+  Future<bool> createTeam(Team team,String userId) async {
     try {
       state = true;
-      await _teamRepository.createTeam(team);
+      await _teamRepository.createTeam(team,userId);
       state = false;
       return true;
     } catch (e) {
