@@ -32,6 +32,7 @@ class _TeamRegistrationFormState extends ConsumerState<TeamRegistrationForm> {
     final teamAsync = ref.watch(userTeamStreamProvider(
         '${widget.eventId}|${user?.registrationId ?? ""}'));
     return Scaffold(
+     resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
