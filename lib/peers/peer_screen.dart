@@ -64,9 +64,6 @@ class _PeerScreenState extends ConsumerState<PeerScreen> with TickerProviderStat
             // Search Bar
             _buildSearchBar(),
             
-            // Filter Section
-            _buildFilterSection(),
-            
             // Results Header
             _buildResultsHeader(),
             
@@ -168,19 +165,22 @@ class _PeerScreenState extends ConsumerState<PeerScreen> with TickerProviderStat
           ),
           SizedBox(width: 12),
           GestureDetector(
-            onTap: _toggleFilters,
+            onTap: () {
+              // FIXED: Call the method properly
+              _showBottomSheet();
+            },
             child: Container(
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: _showFilters ? Colors.blue[600] : Colors.grey[100],
+                color: _hasActiveFilters() ? Colors.blue[600] : Colors.grey[100],
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: _showFilters ? Colors.blue[600]! : Colors.grey[300]!,
+                  color: _hasActiveFilters() ? Colors.blue[600]! : Colors.grey[300]!,
                 ),
               ),
               child: Icon(
                 Icons.tune,
-                color: _showFilters ? Colors.white : Colors.grey[700],
+                color: _hasActiveFilters() ? Colors.white : Colors.grey[700],
               ),
             ),
           ),
@@ -189,86 +189,162 @@ class _PeerScreenState extends ConsumerState<PeerScreen> with TickerProviderStat
     );
   }
 
-  Widget _buildFilterSection() {
-    return AnimatedBuilder(
-      animation: _filterAnimation,
-      builder: (context, child) {
-        return Container(
-          height: _filterAnimation.value * 500,
-          child: SingleChildScrollView(
-            child: Container(
-              color: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (_showFilters) ...[
-                    // Sort Options
+  void _showBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // FIXED: Added this for better control
+      backgroundColor: Colors.transparent, // FIXED: For rounded corners
+      builder: (context) => StatefulBuilder( // FIXED: Added StatefulBuilder for state updates
+        builder: (context, setModalState) => Container(
+          height: MediaQuery.of(context).size.height * 0.75, // FIXED: Set proper height
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            children: [
+              // FIXED: Added drag handle
+              Container(
+                width: 40,
+                height: 4,
+                margin: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              
+              // FIXED: Added header with title and close button
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Text(
-                      'Sort By',
+                      'Filters & Sort',
                       style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: Colors.grey[800],
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 8),
-                    Row(
-                      children: [
-                        _buildSortChip('Latest', 'latest'),
-                        SizedBox(width: 8),
-                        _buildSortChip('Skills', 'skills'),
-                      ],
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.close),
                     ),
-                    SizedBox(height: 16),
-                    
-                    // Skills Filter
-                    FutureBuilder<List<String>>(
-                      future: _getAvailableSkills(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return _buildFilterChips(
-                            'Skills',
-                            snapshot.data!,
-                            _selectedSkills,
-                            (skill) => _toggleSkillFilter(skill),
-                          );
-                        }
-                        return SizedBox.shrink();
-                      },
-                    ),
-                    
-                    // Traits Filter
-                    FutureBuilder<List<String>>(
-                      future: _getAvailableTraits(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return _buildFilterChips(
-                            'Traits',
-                            snapshot.data!,
-                            _selectedTraits,
-                            (trait) => _toggleTraitFilter(trait),
-                          );
-                        }
-                        return SizedBox.shrink();
-                      },
-                    ),
-                    
-                    SizedBox(height: 16),
                   ],
-                ],
+                ),
               ),
-            ),
+              
+              Divider(),
+              
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Sort Options
+                      Text(
+                        'Sort By',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          _buildSortChip('Latest', 'latest', setModalState),
+                          SizedBox(width: 8),
+                          _buildSortChip('Skills', 'skills', setModalState),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      
+                      // Skills Filter
+                      FutureBuilder<List<String>>(
+                        future: _getAvailableSkills(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return _buildFilterChips(
+                              'Skills',
+                              snapshot.data!,
+                              _selectedSkills,
+                              (skill) => _toggleSkillFilter(skill, setModalState),
+                            );
+                          }
+                          return SizedBox.shrink();
+                        },
+                      ),
+                      
+                      // Traits Filter
+                      FutureBuilder<List<String>>(
+                        future: _getAvailableTraits(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return _buildFilterChips(
+                              'Traits',
+                              snapshot.data!,
+                              _selectedTraits,
+                              (trait) => _toggleTraitFilter(trait, setModalState),
+                            );
+                          }
+                          return SizedBox.shrink();
+                        },
+                      ),
+                      
+                      SizedBox(height: 16),
+                      
+                      // FIXED: Added Apply and Clear buttons
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () {
+                                _clearAllFilters();
+                                setModalState(() {});
+                              },
+                              child: Text('Clear All'),
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                setState(() {}); // Update main screen
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue[600],
+                                foregroundColor: Colors.white,
+                              ),
+                              child: Text('Apply'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      
+                      SizedBox(height: 32), // Bottom padding
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
-  Widget _buildSortChip(String label, String value) {
+  // FIXED: Added setModalState parameter to update bottom sheet UI
+  Widget _buildSortChip(String label, String value, StateSetter setModalState) {
     final isSelected = _sortBy == value;
     return GestureDetector(
-      onTap: () => setState(() => _sortBy = value),
+      onTap: () {
+        setState(() => _sortBy = value);
+        setModalState(() => _sortBy = value); // FIXED: Update bottom sheet UI
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
@@ -414,7 +490,7 @@ class _PeerScreenState extends ConsumerState<PeerScreen> with TickerProviderStat
   Widget _buildPeerList(List<PeerModel> peers) {
     return ListView.builder(
       controller: _scrollController,
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(8),
       itemCount: peers.length,
       itemBuilder: (context, index) {
         return Padding(
@@ -481,20 +557,8 @@ class _PeerScreenState extends ConsumerState<PeerScreen> with TickerProviderStat
     );
   }
 
-  // Helper Methods
-  void _toggleFilters() {
-    setState(() {
-      _showFilters = !_showFilters;
-    });
-    
-    if (_showFilters) {
-      _filterAnimationController.forward();
-    } else {
-      _filterAnimationController.reverse();
-    }
-  }
-
-  void _toggleSkillFilter(String skill) {
+  // FIXED: Updated toggle methods to work with StatefulBuilder
+  void _toggleSkillFilter(String skill, StateSetter setModalState) {
     setState(() {
       if (_selectedSkills.contains(skill)) {
         _selectedSkills.remove(skill);
@@ -502,9 +566,10 @@ class _PeerScreenState extends ConsumerState<PeerScreen> with TickerProviderStat
         _selectedSkills.add(skill);
       }
     });
+    setModalState(() {}); // Update bottom sheet UI
   }
 
-  void _toggleTraitFilter(String trait) {
+  void _toggleTraitFilter(String trait, StateSetter setModalState) {
     setState(() {
       if (_selectedTraits.contains(trait)) {
         _selectedTraits.remove(trait);
@@ -512,6 +577,7 @@ class _PeerScreenState extends ConsumerState<PeerScreen> with TickerProviderStat
         _selectedTraits.add(trait);
       }
     });
+    setModalState(() {}); // Update bottom sheet UI
   }
 
   bool _hasActiveFilters() {
