@@ -41,6 +41,18 @@ class AuthController extends StateNotifier<bool> {
     }
   }
 
+  Future<void> addToken(String? f_token) async {
+    try{
+      final user = _ref.read(userProvider);
+      final refreshUser = await _authRepository.signInWithDigi(user!.email, user.password);
+      final f_user = refreshUser.copyWith(f_token: f_token);
+      _ref.read(userProvider.notifier).state = f_user;
+      await _authRepository.storeUserToFirestore(f_user);
+    }catch(e){
+      print(e);
+    }
+  }
+
   Future<void> signInWithDigiCampus(String email, String password,BuildContext context) async {
     state = true;
     try {
@@ -53,7 +65,6 @@ class AuthController extends StateNotifier<bool> {
       });
       state = false;
       const snackBar = SnackBar(
-                  /// need to set following properties for best effect of awesome_snackbar_content
                   elevation: 0,
                   behavior: SnackBarBehavior.floating,
                   backgroundColor: Colors.transparent,
@@ -62,7 +73,6 @@ class AuthController extends StateNotifier<bool> {
                     message:
                         'njoyyyy',
 
-                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
                     contentType: ContentType.success,
                   ),
                 );
@@ -79,19 +89,17 @@ class AuthController extends StateNotifier<bool> {
 //   fontSize: 16.0,
 // );
     } catch(e) {
+      print(e);
       const materialBanner = MaterialBanner(
-                  /// need to set following properties for best effect of awesome_snackbar_content
                   elevation: 0,
                   backgroundColor: Colors.transparent,
                   forceActionsBelow: true,
                   content: AwesomeSnackbarContent(
                     title: 'Enter you Digi Credentials',
                     message:
-                        'Please Confirm your credentials with digicampus',
+                        'Please Confirm your credentials with digicampus ',
 
-                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
                     contentType: ContentType.warning,
-                    // to configure for material banner
                     inMaterialBanner: true,
                   ),
                   actions: [SizedBox.shrink()],

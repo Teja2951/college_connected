@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:college_connectd/auth/controller/auth_controller.dart';
+import 'package:college_connectd/cloud/api.dart';
 import 'package:college_connectd/model/user_model.dart';
 import 'package:college_connectd/tile.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,17 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    _int();
+  }
+
+  void _int() async{
+    await Api().initNotification(ref);
+    print('added called');
+  }
 
 
   @override

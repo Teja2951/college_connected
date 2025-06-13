@@ -1,4 +1,5 @@
 import 'package:college_connectd/auth/controller/auth_controller.dart';
+import 'package:college_connectd/cloud/api.dart';
 import 'package:college_connectd/core/storage/secure_storage.dart';
 import 'package:college_connectd/firebase_options.dart';
 import 'package:college_connectd/routes.dart';
@@ -14,7 +15,12 @@ void main() async {
   
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  );        
+
+  print('----------------');
+  //await Api().initNotification(ref);
+  print('----------------');
+
   
   runApp(const ProviderScope(child: MyApp()));
 }

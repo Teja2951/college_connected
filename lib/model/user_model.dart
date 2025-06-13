@@ -14,7 +14,8 @@ class UserModel {
   final String? collegeName;
   final String? departmentName;
   final String? programmeName;
-  final int? year;            
+  final int? year;  
+  String? f_token;          
 
   UserModel({
     required this.name,
@@ -31,6 +32,7 @@ class UserModel {
     this.departmentName,
     this.programmeName,
     this.year,
+    this.f_token = '',
   });
 
   UserModel copyWith({
@@ -51,6 +53,7 @@ class UserModel {
     bool? emailVerified,
     bool? phoneVerified,
     bool? active,
+    String? f_token,
   }) {
     return UserModel(
       name: name ?? this.name,
@@ -67,6 +70,7 @@ class UserModel {
       departmentName: departmentName ?? this.departmentName,
       programmeName: programmeName ?? this.programmeName,
       year: year ?? this.year,
+      f_token: f_token ?? this.f_token,
     );
   }
 
@@ -86,6 +90,7 @@ class UserModel {
       'departmentName': departmentName,
       'programmeName': programmeName,
       'year': year,
+      'f_token': f_token,
     };
   }
 
@@ -105,6 +110,7 @@ class UserModel {
       departmentName: map['departmentName'] != null ? map['departmentName'] as String : null,
       programmeName: map['programmeName'] != null ? map['programmeName'] as String : null,
       year: map['year'] != null ? map['year'] as int : null,
+      f_token: map['f_token'] as String? ?? '',    
     );
   }
 
@@ -114,7 +120,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(name: $name, email: $email,password:$password, phone: $phone, userType: $userType, token: $token, ukid: $ukid, registrationId: $registrationId, sectionName: $sectionName, photoUrl: $photo, collegeName: $collegeName, departmentName: $departmentName, programmeName: $programmeName, year: $year)';
+    return 'UserModel(name: $name, email: $email,password:$password, phone: $phone, userType: $userType, token: $token, ukid: $ukid, registrationId: $registrationId, sectionName: $sectionName, photoUrl: $photo, collegeName: $collegeName, departmentName: $departmentName, programmeName: $programmeName, year: $year, f_token: $f_token)';
   }
 
 }
