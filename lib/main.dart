@@ -85,7 +85,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     if (isLoggedIn == null) {
       return MaterialApp(
-        title: 'College Connect',
+        title: 'UniSync - Syncing College life',
         home: Scaffold(
           body: const Center(
             child: Column(
@@ -123,7 +123,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           labelSmall: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
           ),
       ),
-      title: 'College Connect',
+      title: 'UniSync - Syncing College life',
       routerDelegate: RoutemasterDelegate(
         routesBuilder: (context) {
           final routes = isLoggedIn ? loggedInRoutes : loggedOutRoutes;
