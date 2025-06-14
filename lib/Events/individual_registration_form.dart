@@ -77,7 +77,7 @@ class _IndividualRegistrationFormState extends ConsumerState<IndividualRegistrat
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Routemaster.of(context).pop(),
+          onPressed: () => Routemaster.of(context).history.back(),
         ),
       ),
       body: Form(

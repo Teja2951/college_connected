@@ -43,7 +43,7 @@ class _EventDetailscreenState extends ConsumerState<EventDetailsScreen> {
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () => Routemaster.of(context).pop(),
+                    onPressed: () => Routemaster.of(context).history.back(),
                   ),
                 ),
                 flexibleSpace: FlexibleSpaceBar(

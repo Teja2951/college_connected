@@ -40,8 +40,11 @@ class _TeamRegistrationFormState extends ConsumerState<TeamRegistrationForm> {
             children: [
               Row(
                 children: [
-                  GestureDetector(
-                    onTap: () => Routemaster.of(context).pop(),
+                  GestureDetector( 
+                    onTap: () { 
+                      // Routemaster.of(context).pop();
+                       Routemaster.of(context).history.back();
+                    },
                     child: Container(
                       width: 44,
                       height: 44,

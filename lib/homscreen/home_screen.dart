@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:college_connectd/auth/controller/auth_controller.dart';
 import 'package:college_connectd/cloud/api.dart';
+import 'package:college_connectd/live_att_button.dart';
 import 'package:college_connectd/model/user_model.dart';
 import 'package:college_connectd/tile.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +43,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    _appbar(user!,ref),
-                    SizedBox(height: 30,),
+                    _appbar(user!,ref,context),
+                    //SizedBox(height: 10,),
+                    SizedBox(height: 10,),
                     mainText(),
                     feauture1(context),
                     feauture2(context),
@@ -138,7 +140,7 @@ class ScribbleLine extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-Widget _appbar(UserModel user,WidgetRef ref) {
+Widget _appbar(UserModel user,WidgetRef ref,BuildContext context) {
   final String firstName = user.name.trim().split(' ').last;
   final String formattedName = firstName[0].toUpperCase() + firstName.substring(1).toLowerCase();
 
@@ -179,28 +181,36 @@ Widget _appbar(UserModel user,WidgetRef ref) {
           ),
         ],
       ),
-      CircleAvatar(
-  radius: 30,
-  backgroundColor: Colors.grey[200],
-  child: GestureDetector(
-    onTap: () {
-      
-    },
-    child: ClipOval(
-      child: CachedNetworkImage(
-        imageUrl: user.photo!,
-        width: 60,
-        height: 60,
-        fit: BoxFit.cover,
-        placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
-        errorWidget: (context, url, error) {
-          ref.read(authControllerProvider.notifier).refreshUser();
-           return Icon(Icons.error);
-        }
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          CircleAvatar(
+            radius: 25,
+            backgroundColor: Colors.grey[200],
+            child: GestureDetector(
+              onTap: () {
+          
+              },
+              child: ClipOval(
+          child: CachedNetworkImage(
+            imageUrl: user.photo!,
+            width: 60,
+            height: 60,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+            errorWidget: (context, url, error) {
+              ref.read(authControllerProvider.notifier).refreshUser();
+               return Icon(Icons.error);
+            }
+          ),
+              ),
+            ),
+          ),
+          LiveAttendanceBadge(onTap: () {
+            Routemaster.of(context).push('/liveAttendence');
+          }),
+        ],
       ),
-    ),
-  ),
-),
     ],
   );
 }
