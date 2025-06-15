@@ -4,6 +4,7 @@ import 'package:college_connectd/model/attendance_model.dart';
 import 'package:college_connectd/model/couse_attendance_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
 class LiveAttendence extends ConsumerStatefulWidget {
   const LiveAttendence({super.key});
@@ -19,65 +20,176 @@ class _LiveAttendenceState extends ConsumerState<LiveAttendence> {
   @override
   Widget build(BuildContext context) {
     final termAsync = ref.watch(termDataProvider);
+    final _selectedFilter = ref.watch(selectedTermProvider);
+
+    // the drop down gets the values from termasync its list of map containing ids and termname dropdown should show all the term names and when user selects a particular term the selected term provider state will update and tht attendance will be shown
+
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: const Text('Attendance', style: TextStyle(fontWeight: FontWeight.w600)),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-      ),
-      body: termAsync.when(
-        data: (t_data) {
-          if (_isFirstBuild && t_data.isNotEmpty) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              ref.read(selectedTermProvider.notifier).state = t_data[1]['id'];
-            });
-            _isFirstBuild = false;
-          }
-          
-          final attendanceAsync = ref.watch(attendanceProvider(ref.read(selectedTermProvider) ?? t_data[1]['id']));
-          return attendanceAsync.when(
-            data: (a_data) {
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Overall Attendance Card
-                    _buildOverallAttendanceCard(a_data),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Target Percentage Section
-                    _buildTargetSection(),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Subjects Header
-                    const Text(
-                      'Subject-wise Attendance',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
-                      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x0F000000),
+                      blurRadius: 8,
+                      offset: Offset(0, 2),
                     ),
-                    
-                    const SizedBox(height: 12),
-                    
-                    // Subject Cards
-                    ...a_data.courses.map((course) => _buildSubjectCard(course)),
                   ],
                 ),
-              );
-            },
-            error: (e, s) => _buildErrorState(),
-            loading: () => const Center(child: CircularProgressIndicator()),
-          );
-        },
-        error: (e, s) => _buildErrorState(),
-        loading: () => const Center(child: CircularProgressIndicator()),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => Routemaster.of(context).pop(),
+                          child: Container(
+                            width: 44,
+                            height: 44,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1A1A1A),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Icon(
+                              Icons.arrow_back_ios_new,
+                              size: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child:  DropdownButtonHideUnderline(
+    child: DropdownButton<int>(
+      value: _selectedFilter,
+      icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+      dropdownColor: Colors.black,
+      underline: Divider(color: Colors.white,thickness: 2,),
+      borderRadius: BorderRadius.circular(16),
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        fontSize: 14,
+      ),
+      items: termAsync.when(
+      data: (terms) => terms.map((term) {
+      return DropdownMenuItem<int>(
+        value: term['id'],
+        child: Text(term['termName']),
+      );
+    }).toList(),
+      error: (a,sa) => [DropdownMenuItem(child: Text('null'))],
+      loading: () => [],
+      ),
+      onChanged: (int? newTerm) {
+        if (newTerm != null) {
+          ref.read(selectedTermProvider.notifier).state = newTerm;
+        }
+      },
+    ),
+  ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Smart Attendance',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w800,
+                              color: Color(0xFF1A1A1A),
+                              height: 1.1,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Now decide maintain your attendance like a pro!',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+        
+              termAsync.when(
+              data: (t_data) {
+                if (_isFirstBuild && t_data.isNotEmpty) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    ref.read(selectedTermProvider.notifier).state = t_data[0]['id'];
+                  });
+                  _isFirstBuild = false;
+                }
+                
+                final attendanceAsync = ref.watch(attendanceProvider(ref.read(selectedTermProvider) ?? t_data[0]['id']));
+                return attendanceAsync.when(
+                  data: (a_data) {
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Overall Attendance Card
+                          _buildOverallAttendanceCard(a_data),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // Target Percentage Section
+                          _buildTargetSection(),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // Subjects Header
+                          const Text(
+                            'Subject-wise Attendance',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 12),
+                          
+                          // Subject Cards
+                          ...a_data.courses.map((course) => _buildSubjectCard(course)),
+                        ],
+                      ),
+                    );
+                  },
+                  error: (e, s) => _buildErrorState(),
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                );
+              },
+              error: (e, s) => _buildErrorState(),
+              loading: () => const Center(child: CircularProgressIndicator()),
+            ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -151,48 +263,58 @@ class _LiveAttendenceState extends ConsumerState<LiveAttendence> {
           ),
         ],
       ),
-      child: Row(
+      child: Column(
         children: [
-          const Text(
-            'Target Attendance:',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Container(
-            width: 60,
-            height: 35,
-            child: TextFormField(
-              initialValue: _targetPercentage.toInt().toString(),
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                suffix: const Text('%', style: TextStyle(fontSize: 12)),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: Colors.blue[300]!),
+          Row(
+            children: [
+              const Text(
+                'Target Attendance:',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: Colors.blue[600]!),
-                ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                filled: true,
-                fillColor: Colors.blue[50],
               ),
-              onChanged: (value) {
-                final newValue = double.tryParse(value);
-                if (newValue != null && newValue >= 0 && newValue <= 100) {
-                  setState(() {
-                    _targetPercentage = newValue;
-                  });
-                }
-              },
-            ),
+              const SizedBox(width: 12),
+              Container(
+                width: 60,
+                height: 35,
+                child: TextFormField(
+                  initialValue: _targetPercentage.toInt().toString(),
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    suffix: const Text('%', style: TextStyle(fontSize: 12)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.blue[300]!),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.blue[600]!),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    filled: true,
+                    fillColor: Colors.blue[50],
+                  ),
+                  onChanged: (value) {
+                    final newValue = double.tryParse(value);
+                    if (newValue != null && newValue >= 0 && newValue <= 100) {
+                      setState(() {
+                        _targetPercentage = newValue;
+                      });
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
+          SizedBox(height: 5,),
+          Text('Set your desired Attendance to calculate the Bunks/Need to attend classes data instantly',
+          style: TextStyle(
+            fontSize: 13,
+            color: Colors.blueGrey,
+          ),)
         ],
       ),
     );
@@ -219,6 +341,7 @@ class _LiveAttendenceState extends ConsumerState<LiveAttendence> {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
+          initiallyExpanded: true,
           tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           childrenPadding: const EdgeInsets.all(16),
           leading: Container(

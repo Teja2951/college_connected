@@ -189,7 +189,7 @@ Widget _appbar(UserModel user,WidgetRef ref,BuildContext context) {
             backgroundColor: Colors.grey[200],
             child: GestureDetector(
               onTap: () {
-          
+                Routemaster.of(context).push('/profile');
               },
               child: ClipOval(
           child: CachedNetworkImage(

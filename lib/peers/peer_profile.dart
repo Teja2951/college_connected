@@ -344,13 +344,13 @@ class _PeerCardFormBottomSheetState extends ConsumerState<PeerCardFormBottomShee
     final peer = widget.peerModel!;
     _nameController.text = peer.name;
     _bioController.text = peer.bio;
-    _profileLinkController.text = peer.profileLink;
+    //_profileLinkController.text = peer.profileLink;
     _gitHubController.text = peer.gitHubLink ?? '';
-    _linkedinController.text = peer.linkedinLink ?? '';
+    _linkedinController.text = peer.linkedinLink;
     _skills = List.from(peer.skills);
     _traits = List.from(peer.traits);
     _isPublic = peer.isPublic;
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -460,12 +460,12 @@ class _PeerCardFormBottomSheetState extends ConsumerState<PeerCardFormBottomShee
                     ),
 
                     // Profile Link Field
-                    _buildTextField(
-                      controller: _profileLinkController,
-                      label: 'Profile Link',
-                      hint: 'https://yourprofile.com',
-                      validator: (value) => value?.isEmpty == true ? 'Profile link is required' : null,
-                    ),
+                    // _buildTextField(
+                    //   controller: _profileLinkController,
+                    //   label: 'Profile Link',
+                    //   hint: 'https://yourprofile.com',
+                    //   validator: (value) => value?.isEmpty == true ? 'Profile link is required' : null,
+                    // ),
 
                     // GitHub Link Field
                     _buildTextField(
@@ -477,7 +477,7 @@ class _PeerCardFormBottomSheetState extends ConsumerState<PeerCardFormBottomShee
                     // LinkedIn Link Field
                     _buildTextField(
                       controller: _linkedinController,
-                      label: 'LinkedIn Link (Optional)',
+                      label: 'LinkedIn Link',
                       hint: 'https://linkedin.com/in/username',
                     ),
 
@@ -745,10 +745,10 @@ class _PeerCardFormBottomSheetState extends ConsumerState<PeerCardFormBottomShee
       final peerModel = PeerModel(
         userId: widget.userId,
         name: _nameController.text.trim(),
-        profileLink: _profileLinkController.text.trim(),
+        profileLink: _profileLinkController.text.trim().isEmpty ? null : _profileLinkController.text.trim(),
         skills: _skills,
         gitHubLink: _gitHubController.text.trim().isEmpty ? null : _gitHubController.text.trim(),
-        linkedinLink: _linkedinController.text.trim().isEmpty ? null : _linkedinController.text.trim(),
+        linkedinLink: _linkedinController.text.trim(),
         traits: _traits,
         bio: _bioController.text.trim(),
         isPublic: _isPublic,

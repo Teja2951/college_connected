@@ -51,6 +51,7 @@ dependencies:
   image_picker: ^1.1.2
   awesome_snackbar_content: ^0.1.6
   firebase_messaging:
+  
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -99,6 +100,7 @@ flutter:
     - assets/animations/onboard.json
     - assets/animations/a_lottie.json
     - assets/animations/b_lottie.json
+    - assets/icons/profile_bg.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

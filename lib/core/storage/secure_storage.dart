@@ -18,6 +18,7 @@ class SecureStorageService {
     return value?? '' ;
   }
   Future<void> clearLoginStatus() async {
+    print('clear l');
     await _storage.delete(key: 'isLoggedIn');
     await _storage.delete(key: 'uid');
   }

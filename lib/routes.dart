@@ -10,6 +10,7 @@ import 'package:college_connectd/opputunities/oppurtunities_screen.dart';
 import 'package:college_connectd/opputunities/oppurtunity_detail_screen.dart';
 import 'package:college_connectd/peers/peer_profile.dart';
 import 'package:college_connectd/peers/peer_screen.dart';
+import 'package:college_connectd/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -38,6 +39,7 @@ final loggedInRoutes = RouteMap(routes: {
       final eventId = route.queryParameters['id']!;
       return MaterialPage(child: TeamRegistrationForm(eventId: eventId,));
   },
+  '/profile' : (_) => MaterialPage(child: ProfileScreen()),
   '/liveAttendence' : (_) => MaterialPage(child: LiveAttendence()),
   '/oppurtunies' : (_) => MaterialPage(child: OpportunitiesScreen()),
   '/opportunity/:id': (routeData) => MaterialPage(

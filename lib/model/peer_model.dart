@@ -4,10 +4,10 @@ import 'package:collection/collection.dart';
 class PeerModel {
   final String? userId;
   final String name;
-  final String profileLink;
+  final String? profileLink;
   final List<String> skills;
   final String? gitHubLink;
-  final String? linkedinLink;
+  final String linkedinLink;
   final List<String> traits;
   final String bio;
   final bool isPublic;
@@ -16,10 +16,10 @@ class PeerModel {
   PeerModel({
     this.userId,
     required this.name,
-    required this.profileLink,
+    this.profileLink,
     required this.skills,
     this.gitHubLink,
-    this.linkedinLink,
+    required this.linkedinLink,
     this.traits = const [],
     required this.bio,
     required this.isPublic,
