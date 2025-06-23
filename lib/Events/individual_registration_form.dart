@@ -248,7 +248,9 @@ class _IndividualRegistrationFormState extends ConsumerState<IndividualRegistrat
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Text(
-                                user.departmentName?.toUpperCase() ?? 'EVENT',
+
+                                //user.departmentName?.toUpperCase() ?? 'EVENT',
+                                'ISTE-CSE',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 2,

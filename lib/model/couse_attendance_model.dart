@@ -49,20 +49,21 @@ class CouseAttendanceModel {
 
   factory CouseAttendanceModel.fromMap(Map<String, dynamic> map) {
     print('------------------------------------------------------');
-    int tital = 0;
-    // print(map);
-    final l = (map['components'][0]['attendance'] as List).forEach((e) {
-      if(e['id']!= null){
-        tital++;
-      }
-    });
+    // int tital = 0;
+    // // print(map);
+    // final l = (map['components'][0]['attendance'] as List).forEach((e) {
+    //   if(e['id']!= null){
+    //     tital++;
+    //   }
+    // });
+    // TODO:- CONFIRM THIS BY DIGICAMPUS AND CHANGE IF REQUIRED
     return CouseAttendanceModel(
       courseName: map['courseName'] as String,
       totalPresent: map['totalPresent'] as int,
       totalAbsent: map['totalAbsent'] as int,
       totalClasses: map['totalClasses'] as int,
       percentage: map['percentage'] as double,
-      totalScheduledClasses: tital,
+      totalScheduledClasses: (map['components'][0]['attendance']).length,  // TODO:- UPAR DEKHO BHAII
     );
   }
 

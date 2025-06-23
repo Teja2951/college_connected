@@ -93,7 +93,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Text(
                 user?.name ?? 'Unknown User',
                 style: const TextStyle(
-                  fontSize: 26,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -712,7 +712,7 @@ class _LegalOptionsModalState extends State<LegalOptionsModal> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) =>  LegalDocumentModal(
-        title: 'Terms % Conditions',
+        title: 'Terms & Conditions',
         content: content
       ),
     );

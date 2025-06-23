@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:college_connectd/auth/controller/auth_controller.dart';
 import 'package:college_connectd/cloud/api.dart';
@@ -33,6 +34,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Routemaster.of(context).push('/oppurtunitiesEdit');
+      //   },
+      // ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: LayoutBuilder(
@@ -101,10 +107,28 @@ Widget feauture4(BuildContext context) {
 return FeatureTile(
   title: "Coding Arena", 
   subtitle: "ISTE official Codespace compete--Practice--Grow",
-  lottieAsset: "assets/animations/onboard.json",
+  lottieAsset: "assets/animations/d_lottie.json",
   tag: "Coding </>", 
   gradientColors: [Color.fromARGB(255, 12, 136, 231), Color.fromARGB(255, 148, 0, 254)],
-  onTap: () => Routemaster.of(context).push('/addEventForm'),
+  onTap: () {
+    const snackBar = SnackBar(
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: 'We are Working on it!',
+                    message:
+                        'Rolling out soon',
+
+                    contentType: ContentType.success,
+                  ),
+                );
+
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(snackBar);
+
+  },
 );
 }
 

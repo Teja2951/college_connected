@@ -51,6 +51,7 @@ class LiveAttdncRepository {
   Future<List<Map<String,dynamic>>> getTermData({bool retrying = false}) async{
     final token = _ref.read(userProvider)?.token;
     final year = DateTime.now().year - _ref.read(userProvider)!.year! + 1;
+    print('the year is --------------------  $year');
     try {
     final response = await http.get(
       Uri.parse('https://gmrit.digiicampus.com/rest/terms/programmeBatchTerms?batch=$year&programme=11'),

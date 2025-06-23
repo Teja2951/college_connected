@@ -121,7 +121,7 @@ class _LiveAttendenceState extends ConsumerState<LiveAttendence> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'Now decide maintain your attendance like a pro!',
+                            'Now attend classes like a pro!! 😎',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.grey[600],
@@ -181,11 +181,11 @@ class _LiveAttendenceState extends ConsumerState<LiveAttendence> {
                     );
                   },
                   error: (e, s) => _buildErrorState(),
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () => const Center(child: LinearProgressIndicator()),
                 );
               },
               error: (e, s) => _buildErrorState(),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: LinearProgressIndicator()),
             ),
             ],
           ),
@@ -284,7 +284,7 @@ class _LiveAttendenceState extends ConsumerState<LiveAttendence> {
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
-                    suffix: const Text('%', style: TextStyle(fontSize: 12)),
+                    suffix: const Text('%', style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.blue[300]!),
@@ -310,7 +310,7 @@ class _LiveAttendenceState extends ConsumerState<LiveAttendence> {
             ],
           ),
           SizedBox(height: 5,),
-          Text('Set your desired Attendance to calculate the Bunks/Need to attend classes data instantly',
+          Text('Set your desired Attendance and get instant report of how many classes you can Bunk!🤫',
           style: TextStyle(
             fontSize: 13,
             color: Colors.blueGrey,
@@ -451,7 +451,7 @@ class _LiveAttendenceState extends ConsumerState<LiveAttendence> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'You can Bunk $canBunk more classes to maintain ${_targetPercentage.toInt()}%',
+                      'You can Bunk $canBunk more classes and still maintain ${_targetPercentage.toInt()}%',
                       style: TextStyle(
                         color: Colors.green[700],
                         fontSize: 14,

@@ -85,6 +85,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     if (isLoggedIn == null) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'UniSync - Syncing College life',
         home: Scaffold(
           body: const Center(

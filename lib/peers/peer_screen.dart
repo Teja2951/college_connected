@@ -107,7 +107,7 @@ class _PeerScreenState extends ConsumerState<PeerScreen> with TickerProviderStat
           ),
           Spacer(),
           GestureDetector(
-            onTap: () => Routemaster.of(context).push('/profile'),
+            onTap: () => Routemaster.of(context).push('/peerProfile'),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.blueAccent,

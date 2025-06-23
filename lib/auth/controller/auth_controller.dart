@@ -69,9 +69,9 @@ class AuthController extends StateNotifier<bool> {
                   behavior: SnackBarBehavior.floating,
                   backgroundColor: Colors.transparent,
                   content: AwesomeSnackbarContent(
-                    title: 'Welcome Back',
+                    title: 'Yay!! Welcome to your Space',
                     message:
-                        'njoyyyy',
+                        'Explore.Learn.Connect.Grow',
 
                     contentType: ContentType.success,
                   ),
@@ -95,11 +95,11 @@ class AuthController extends StateNotifier<bool> {
                   backgroundColor: Colors.transparent,
                   forceActionsBelow: true,
                   content: AwesomeSnackbarContent(
-                    title: 'Enter you Digi Credentials',
+                    title: 'Wrong Email/Password',
                     message:
-                        'Please Confirm your credentials with digicampus ',
+                        'Confirm your credential with digicampus and comeback soon!!',
 
-                    contentType: ContentType.warning,
+                    contentType: ContentType.failure,
                     inMaterialBanner: true,
                   ),
                   actions: [SizedBox.shrink()],

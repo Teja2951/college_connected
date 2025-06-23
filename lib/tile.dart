@@ -111,8 +111,8 @@ class _FeatureTileState extends State<FeatureTile> {
                     // Lottie Animation
                     Center(
                       child: SizedBox(
-                        width: 140,
-                        height: 140,
+                        width: 200,
+                        height: 200,
                         child: Lottie.asset(
                           widget.lottieAsset,
                           fit: BoxFit.contain,

@@ -6,6 +6,7 @@ import 'package:college_connectd/attendance/view/live_attendence.dart';
 import 'package:college_connectd/auth/view/login_screen.dart';
 import 'package:college_connectd/Events/event_screen.dart';
 import 'package:college_connectd/homscreen/home_screen.dart';
+import 'package:college_connectd/opputunities/oppurtunities_edit.dart';
 import 'package:college_connectd/opputunities/oppurtunities_screen.dart';
 import 'package:college_connectd/opputunities/oppurtunity_detail_screen.dart';
 import 'package:college_connectd/peers/peer_profile.dart';
@@ -21,7 +22,7 @@ final loggedOutRoutes = RouteMap(routes: {
 final loggedInRoutes = RouteMap(routes: {
 
   '/peers' : (_) => MaterialPage(child: PeerScreen()),
-  '/profile' : (_) => MaterialPage(child: PeerProfile()),
+  '/peerProfile' : (_) => MaterialPage(child: PeerProfile()),
 
 
   '/' : (_) => MaterialPage(child: HomeScreen()),
@@ -39,6 +40,7 @@ final loggedInRoutes = RouteMap(routes: {
       final eventId = route.queryParameters['id']!;
       return MaterialPage(child: TeamRegistrationForm(eventId: eventId,));
   },
+  '/oppurtunitiesEdit': (_) => MaterialPage(child: OpportunityFormScreen()),
   '/profile' : (_) => MaterialPage(child: ProfileScreen()),
   '/liveAttendence' : (_) => MaterialPage(child: LiveAttendence()),
   '/oppurtunies' : (_) => MaterialPage(child: OpportunitiesScreen()),
