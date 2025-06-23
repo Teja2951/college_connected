@@ -208,25 +208,43 @@ Widget _appbar(UserModel user,WidgetRef ref,BuildContext context) {
       Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundColor: Colors.grey[200],
+          // CircleAvatar(
+          //   radius: 25,
+          //   backgroundColor: Colors.grey[200],
+          //   child: GestureDetector(
+          //     onTap: () {
+          //       Routemaster.of(context).push('/profile');
+          //     },
+          //     child: ClipOval(
+          // child: CachedNetworkImage(
+          //   imageUrl: user.photo!,
+          //   width: 60,
+          //   height: 60,
+          //   fit: BoxFit.cover,
+          //   placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+          //   errorWidget: (context, url, error) {
+          //     ref.read(authControllerProvider.notifier).refreshUser();
+          //      return Icon(Icons.error);
+          //   }
+          // ),
+          //     ),
+          //   ),
+          // ),
+          ClipOval(
             child: GestureDetector(
               onTap: () {
                 Routemaster.of(context).push('/profile');
               },
-              child: ClipOval(
-          child: CachedNetworkImage(
-            imageUrl: user.photo!,
-            width: 60,
-            height: 60,
-            fit: BoxFit.cover,
-            placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
-            errorWidget: (context, url, error) {
-              ref.read(authControllerProvider.notifier).refreshUser();
-               return Icon(Icons.error);
-            }
-          ),
+              child: Image.network(
+                user.photo!,
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+                // placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+                // errorWidget: (context, url, error) {
+                //   ref.read(authControllerProvider.notifier).refreshUser();
+                //    return Icon(Icons.error);
+                // }
               ),
             ),
           ),
