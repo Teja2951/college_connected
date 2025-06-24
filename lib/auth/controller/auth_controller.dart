@@ -34,14 +34,31 @@ class AuthController extends StateNotifier<bool> {
     try{
       final user = _ref.read(userProvider);
       final refreshUser = await _authRepository.signInWithDigi(user!.email, user.password);
+      print('refewsh');
+      print(refreshUser);
       _ref.read(userProvider.notifier).state = refreshUser;
       await _authRepository.storeUserToFirestore(refreshUser);
     }catch(e){
+      print('signout kar');
+     Fluttertoast.showToast(
+  msg: "Password has been expired please reset the password from digicampus",
+  toastLength: Toast.LENGTH_LONG,
+  gravity: ToastGravity.BOTTOM,
+  backgroundColor: Colors.red,
+  textColor: const Color.fromARGB(255, 255, 255, 255),
+  fontSize: 16.0,
+ );
+      SecureStorageService().clearLoginStatus();
+      _ref.read(authStateProvider.notifier).update((state) {
+        return false;
+      });
+      print('ho ijhf');
       print(e);
     }
   }
 
   Future<void> addToken(String? f_token) async {
+    if(f_token!=null){
     try{
       final user = _ref.read(userProvider);
       final refreshUser = await _authRepository.signInWithDigi(user!.email, user.password);
@@ -50,6 +67,7 @@ class AuthController extends StateNotifier<bool> {
       await _authRepository.storeUserToFirestore(f_user);
     }catch(e){
       print(e);
+    }
     }
   }
 

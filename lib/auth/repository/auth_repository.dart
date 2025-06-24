@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_connectd/core/Firebase/firebase_providers.dart';
+import 'package:college_connectd/core/storage/secure_storage.dart';
 import 'package:college_connectd/model/user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +25,7 @@ class AuthRepository {
     final Map<String, dynamic> body = {
     "email": emailId,
     "password": password,
-    "registrationId": "test_registration_id",
+    "registrationId": "test_registration_id", // TODO: REMOVE THIS ALL
     "phone": null,
     "browser": "Chrome",
     "deviceId": "test_device_id",
@@ -45,12 +46,18 @@ class AuthRepository {
       );
 
       final jsonData = jsonDecode(response.body);
+      print('yahapar');
+      if(jsonData['res']['message'] == 'PASSWORD_EXPIRED'){
+        print('refresh nhi ho paya');
+        throw Exception('Expired');
+      }
       final userJson = jsonData['res']['user'];
       userJson['password'] = body['password'];
       final user = UserModel.fromMap(userJson);
       return user;
     }
     catch(e){
+      
       throw(e);
     }
   }
