@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_connectd/auth/controller/auth_controller.dart';
-import 'package:college_connectd/auth/repository/auth_repository.dart';
 import 'package:college_connectd/core/storage/secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

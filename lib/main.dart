@@ -6,6 +6,7 @@ import 'package:college_connectd/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:routemaster/routemaster.dart';
 
 
@@ -35,8 +36,7 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
-    super.initState();
-    
+    super.initState();    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkLoginStatus();
     });
@@ -88,15 +88,16 @@ class _MyAppState extends ConsumerState<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'UniSync - Syncing College life',
         home: Scaffold(
-          body: const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(height: 16),
-                Text('Loading...'),
-              ],
-            ),
+          body: Center(
+            child: Lottie.asset('assets/animations/loading.json'),
+            // child: Column(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     CircularProgressIndicator(),
+            //     SizedBox(height: 16),
+            //     Text('Loading...'),
+            //   ],
+            // ),
           ),
         ),
       );

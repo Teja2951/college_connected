@@ -102,6 +102,7 @@ flutter:
     - assets/animations/a_lottie.json
     - assets/animations/b_lottie.json
     - assets/animations/d_lottie.json
+    - assets/animations/loading.json
     - assets/icons/profile_bg.png
     - assets/icons/Uni7.png
 
