@@ -539,9 +539,7 @@ class OpportunityDetailsView extends StatelessWidget {
   }
 
   void _shareOpportunity(BuildContext context) {
-    // Implement share functionality
-    // You can use share_plus package for this
-    //_showInfoSnackBar(context, 'Share functionality coming soon!');
+    _showInfoSnackBar(context, 'Working on it soon you can share the oppurtunities');
   }
 
   void _showErrorSnackBar(BuildContext context, String message) {

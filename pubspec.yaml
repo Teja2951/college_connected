@@ -35,7 +35,6 @@ dependencies:
   firebase_core: ^3.13.0
   cloud_firestore: ^5.6.6
   firebase_storage: ^12.4.5
-  # google_sign_in: ^6.3.0
   fpdart: ^1.1.1
   http:
   flutter_secure_storage:
@@ -47,8 +46,6 @@ dependencies:
   qr_flutter: ^4.1.0
   share_plus: ^7.2.1
   url_launcher: ^6.3.1
-  supabase_flutter:
-  image_picker: ^1.1.2
   awesome_snackbar_content: ^0.1.6
   firebase_messaging:
   rename: ^3.1.0

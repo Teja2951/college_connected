@@ -175,7 +175,7 @@ Widget _appbar(UserModel user,WidgetRef ref,BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Hello,',
+            'Hey 👋,',
             style: TextStyle(
               fontSize: 28,
               color: Colors.grey[700],
@@ -221,10 +221,10 @@ Widget _appbar(UserModel user,WidgetRef ref,BuildContext context) {
             width: 60,
             height: 60,
             fit: BoxFit.cover,
-            placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+            placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,),
             errorWidget: (context, url, error) {
               ref.read(authControllerProvider.notifier).refreshUser();
-               return Icon(Icons.error);
+               return Icon(Icons.person,);
             }
           ),
               ),

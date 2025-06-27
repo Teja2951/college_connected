@@ -21,33 +21,72 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(user),
-            _buildQuickActionsSection(),
-            const Divider(),
-            _buildFooter(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildHeader(user),
+              _buildQuickActionsSection(),
+              const Divider(),
+              _buildFooter(),
+            ],
+          ),
         ),
       ),
     );
   }
 
+
+
   Widget _buildHeader(user) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
+  return Container(
+    height: 200,
+    width: double.infinity,
+    clipBehavior: Clip.antiAlias,
+    decoration: BoxDecoration(
+      borderRadius: const BorderRadius.only(
+        bottomLeft:  Radius.circular(40),
+        bottomRight: Radius.circular(40),
+      ),
+      image: const DecorationImage(       
+        image: AssetImage('assets/icons/Uni7.png'),
+        fit: BoxFit.cover,
+      ),
+    ),
+    child: Stack(
       children: [
-        Image.asset('assets/icons/profile_bg.png'),
+        Positioned.fill(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end:   Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.15),  // subtle dim at top
+                  Colors.black.withOpacity(0.55),  // stronger at bottom
+                ],
+              ),
+            ),
+          ),
+        ),
         _buildBackButton(),
         _buildProfileInfo(user),
       ],
-    );
-  }
+    ),
+  );
+}
+
+ 
+  // Stack(children: [
+  //       Container(child: Image.asset('assets/icons/profile_bg.png')),
+  //         _buildBackButton(),
+  //   _buildProfileInfo(user),
+  //     ]
+  //       ),
 
   Widget _buildBackButton() {
     return Positioned(
-      top: 0,
-      left: 0,
+      top: 10,
+      left: 10,
       child: GestureDetector(
                     onTap: () => Routemaster.of(context).pop(),
                     child: Container(
@@ -67,69 +106,43 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  Widget _buildProfileInfo(user) {
-    return Positioned(
-      bottom: 0,
-      right: 0,
-      left: 0,
-      child: Container(
-        height: 100,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.black.withOpacity(0.8),
-              Colors.black.withOpacity(0.0),
-            ],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                user?.name ?? 'Unknown User',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                user?.email ?? '',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                (user?.year != null) ? 'B.Tech(${user!.year})' : '',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
+ Widget _buildProfileInfo(user) => Positioned(
+  bottom: 12,
+  left:   16,
+  right:  16,
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Text(
+        user?.name ?? 'Not Found',
+        style: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
         ),
       ),
-    );
-  }
+      Text(
+        user?.email ?? '',
+        style: const TextStyle(fontSize: 16, color: Colors.white),
+      ),
+      if (user?.year != null)
+        Text('B.Tech(${user!.year})',
+          style: const TextStyle(fontSize: 16, color: Colors.white)),
+    ],
+  ),
+);
 
 
   Widget _buildQuickActionsSection() {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTilesGrid(),
-            ],
-          ),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildTilesGrid(),
+
+          ],
         ),
       ),
     );
@@ -141,6 +154,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         _buildNoticeBoardTile(),
         const SizedBox(height: 8),
         Divider(color: Colors.blue,indent: 65,endIndent: 65,thickness: 2,),
+                const SizedBox(height: 8),
+
         Row(
           children: [
             Expanded(
@@ -352,11 +367,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget _buildFooter() {
     return Container(
       alignment: Alignment.center,
-      padding: const EdgeInsets.all(8),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3),
+            padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () => _showLogoutDialog(context),
               style: ElevatedButton.styleFrom(
@@ -375,12 +389,29 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
             ),
           ),
-          const Text(
-            'Made with 😍 by Team Aavishkaar',
-            style: TextStyle(fontSize: 14, color: Colors.black),
+GestureDetector(
+          onTap: () => launchUrl(
+            Uri.parse(
+                'https://www.linkedin.com/company/unisyncofficial/'),
+            mode: LaunchMode.externalApplication,
           ),
-        ],
-      ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(width: 6),
+              const Text(
+                'Made with 😍 by Team Aavishkaar',
+                style: TextStyle(
+                  fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(width: 8),
+              Icon(Icons.rocket_launch,
+                  size: 18, color: Colors.pink),
+            ],
+          ),
+        ),
+      ],
+    )
     );
   }
 
@@ -495,9 +526,9 @@ class _NoticeBoardModalState extends State<NoticeBoardModal> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator()); // loading
           } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}")); // error
+            return Center(child: Text("Our Servers Busyyyyy!")); // error
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text("No data found")); // empty
+            return Center(child: Text("hMM need to post nowwww")); // empty
           } else {
             final d = snapshot.data!;
             return ListView.builder(
@@ -653,7 +684,7 @@ class _LegalOptionsModalState extends State<LegalOptionsModal> {
             builder: (context,snapshot){
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // loading
+            return Center(child: LinearProgressIndicator()); // loading
           } else if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}")); // error
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -679,7 +710,7 @@ class _LegalOptionsModalState extends State<LegalOptionsModal> {
             builder: (context,snapshot){
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // loading
+            return Center(child: LinearProgressIndicator()); // loading
           } else if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}")); // error
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

@@ -6,42 +6,42 @@ import 'package:college_connectd/peers/peer_card.dart';
 import 'package:college_connectd/peers/peer_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Image picker and storage functions
-Future<Uint8List> pickImage() async {
-  final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-  final finalBytes = await File(pickedFile!.path).readAsBytes();
-  return finalBytes;
-}
+// Future<Uint8List> pickImage() async {
+//   final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+//   final finalBytes = await File(pickedFile!.path).readAsBytes();
+//   return finalBytes;
+// }
 
-class StorageMethods {
-  Future<String> getUploadedImage(Uint8List file) async {
-    final String bucketName = 'peers';
-    final String fileName = 'peers${DateTime.now().millisecondsSinceEpoch}.jpg';
+// class StorageMethods {
+//   Future<String> getUploadedImage(Uint8List file) async {
+//     final String bucketName = 'peers';
+//     final String fileName = 'peers${DateTime.now().millisecondsSinceEpoch}.jpg';
 
-    try {
-      final response = await Supabase.instance.client.storage.from(bucketName).uploadBinary(
-        fileName,
-        file,
-      );
+//     try {
+//       final response = await Supabase.instance.client.storage.from(bucketName).uploadBinary(
+//         fileName,
+//         file,
+//       );
 
-      if (response.isEmpty) {
-        print("Upload failed: Empty response");
-        return 'null';
-      }
+//       if (response.isEmpty) {
+//         print("Upload failed: Empty response");
+//         return 'null';
+//       }
 
-      final String publicUrl = Supabase.instance.client.storage.from(bucketName).getPublicUrl(fileName);
-      print("Uploaded Image URL: $publicUrl");
+//       final String publicUrl = 'Supabase.instance.client.storage.from(bucketName).getPublicUrl(fileName)';
+//       print("Uploaded Image URL: $publicUrl");
 
-      return publicUrl;
-    } catch (e) {
-      print("Error uploading image: $e");
-      return 'null';
-    }
-  }
-}
+//       return publicUrl;
+//     } catch (e) {
+//       print("Error uploading image: $e");
+//       return 'null';
+//     }
+//   }
+// }
 
 class PeerProfile extends ConsumerStatefulWidget {
   PeerProfile({super.key});
@@ -708,18 +708,18 @@ class _PeerCardFormBottomSheetState extends ConsumerState<PeerCardFormBottomShee
     }
   }
 
-  Future<void> _pickProfileImage() async {
-    try {
-      final imageBytes = await pickImage();
-      setState(() {
-        _profileImage = imageBytes;
-      });
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to pick image: $e')),
-      );
-    }
-  }
+  // Future<void> _pickProfileImage() async {
+  //   try {
+  //     final imageBytes = await pickImage();
+  //     setState(() {
+  //       _profileImage = imageBytes;
+  //     });
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Failed to pick image: $e')),
+  //     );
+  //   }
+  // }
 
   Future<void> _savePeerCard() async {
     if (!_formKey.currentState!.validate()) return;
@@ -735,8 +735,8 @@ class _PeerCardFormBottomSheetState extends ConsumerState<PeerCardFormBottomShee
     try {
       String? profileImageUrl;
       if (_profileImage != null) {
-        final storageMethod = StorageMethods();
-        profileImageUrl = await storageMethod.getUploadedImage(_profileImage!);
+        // final storageMethod = StorageMethods();
+        // profileImageUrl = await storageMethod.getUploadedImage(_profileImage!);
         if (profileImageUrl == 'null') {
           profileImageUrl = null;
         }
